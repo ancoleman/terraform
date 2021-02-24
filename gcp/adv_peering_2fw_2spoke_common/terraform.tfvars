@@ -7,7 +7,7 @@
 
 
 #-------------------------------------------------------------------
-regions            = ["us-east4"]
+regions            = ["us-central1"]
 
 mgmt_vpc          = "mgmt-vpc"
 mgmt_subnet       = ["mgmt"]
@@ -33,7 +33,7 @@ spoke2_vpc        = "spoke2-vpc"
 spoke2_subnets    = ["spoke2-subnet1"]
 spoke2_cidrs      = ["10.2.0.0/24"]
 spoke2_vms        = ["spoke2-vm1"]
-spoke_user        = "demo"
+#spoke_user        = "demo"
 
 fw_names_common  = ["vmseries01", "vmseries02"]
 fw_machine_type   = "n1-standard-4"
