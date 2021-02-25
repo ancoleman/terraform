@@ -8,6 +8,7 @@ module "vpc_spoke1" {
   regions              = var.regions
   allowed_sources      = ["0.0.0.0/0"]
   delete_default_route = true
+  regional_subnets     = var.spoke1_regional_subnets
 }
 
 module "vm_spoke1" {
@@ -33,7 +34,7 @@ module "ilb_web" {
   ports             = ["80"]
   health_check_port = "80"
   ip_address        = var.spoke1_ilb_ip
- 
+
   backends = {
     "0" = [
       {
@@ -79,6 +80,7 @@ module "vpc_spoke2" {
   regions              = var.regions
   allowed_sources      = ["0.0.0.0/0"]
   delete_default_route = true
+  regional_subnets     = var.spoke2_regional_subnets
 }
 
 module "vm_spoke2" {

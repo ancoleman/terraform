@@ -31,3 +31,6 @@ variable delete_default_route {
   default = "false"
 }
 
+variable "regional_subnets" {
+  default = {}
+}

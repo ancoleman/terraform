@@ -12,6 +12,14 @@ resource "google_compute_subnetwork" "default" {
   network       = google_compute_network.default.self_link
 }
 
+resource "google_compute_subnetwork" "regional" {
+  for_each      = var.regional_subnets
+  name          = each.key
+  ip_cidr_range = each.value.cidr
+  region        = each.value.region
+  network       = google_compute_network.default.self_link
+}
+
 resource "google_compute_firewall" "default" {
   count         = length(var.allowed_sources) != 0 ? 1 : 0
   name          = "${google_compute_network.default.name}-ingress"
