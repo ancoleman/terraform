@@ -87,6 +87,34 @@ module "lb_outbound" {
 }
 
 
+module "fw_common_east4" {
+  source = "./modules/vmseries/"
+  names  = var.fw_names_common
+  zones = [
+    data.google_compute_zones.useast4.names[0],
+    data.google_compute_zones.useast4.names[1]
+  ]
+  subnetworks = [
+    module.vpc_mgmt.vpc_regional_subnetworks_self_link_map["mgmt-useast4"].self_link,
+    module.vpc_mgmt.vpc_regional_subnetworks_self_link_map["untrust-useast4"].self_link,
+    module.vpc_mgmt.vpc_regional_subnetworks_self_link_map["trust-useast4"].self_link
+  ]
+  machine_type          = var.fw_machine_type
+  bootstrap_bucket      = module.bootstrap_common.bucket_name
+  mgmt_interface_swap   = "enable"
+  ssh_key               = fileexists(var.public_key_path) ? "admin:${file(var.public_key_path)}" : ""
+  image                 = "${var.fw_image}-${var.fw_panos}"
+  nic0_public_ip        = true
+  nic1_public_ip        = true
+  nic2_public_ip        = false
+  create_instance_group = true
+
+  dependencies = [
+    module.bootstrap_common.completion,
+  ]
+}
+
+
 #-----------------------------------------------------------------------------------------------
 # Create routes route to internal LBs. Routes will be exported to spokes via GCP peering.
 resource "google_compute_route" "default" {
@@ -110,22 +138,30 @@ resource "google_compute_route" "eastwest" {
 
 #-----------------------------------------------------------------------------------------------
 # Outputs to terminal
-output EXT-LB {
+output "EXT-LB" {
   value = "http://${module.lb_inbound.forwarding_rule_ip_address}"
 }
 
-output MGMT-FW1 {
+output "MGMT-FW1" {
   value = "https://${module.fw_common.nic1_public_ip[0]}"
 }
 
-output MGMT-FW2 {
+output "MGMT-FW2" {
   value = "https://${module.fw_common.nic1_public_ip[1]}"
 }
 
-output SSH-TO-SPOKE1 {
+output "MGMT-FW1-USEAST4" {
+  value = "https://${module.fw_common_east4.nic1_public_ip[0]}"
+}
+
+output "MGMT-FW2-USEAST4" {
+  value = "https://${module.fw_common_east4.nic1_public_ip[1]}"
+}
+
+output "SSH-TO-SPOKE1" {
   value = "ssh ${var.spoke_user}@${module.fw_common.nic0_public_ip[0]} -p 221 -i ${replace(var.public_key_path, ".pub", "")}"
 }
 
-output SSH-TO-SPOKE2 {
+output "SSH-TO-SPOKE2" {
   value = "ssh ${var.spoke_user}@${module.fw_common.nic0_public_ip[0]} -p 222 -i ${replace(var.public_key_path, ".pub", "")}"
 }

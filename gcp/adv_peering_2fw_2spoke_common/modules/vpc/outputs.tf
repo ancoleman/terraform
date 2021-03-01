@@ -22,3 +22,6 @@ output vpc_self_link {
   value = google_compute_network.default.*.self_link[0]
 }
 
+output "vpc_regional_subnetworks_self_link_map" {
+  value = google_compute_subnetwork.regional
+}

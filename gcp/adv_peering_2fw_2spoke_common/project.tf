@@ -16,3 +16,7 @@ provider "google-beta" {
 }
 
 data "google_compute_zones" "available" {}
+
+data "google_compute_zones" "useast4" {
+  region = "us-east4"
+}

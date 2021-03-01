@@ -13,14 +13,32 @@ mgmt_vpc     = "mgmt-vpc"
 mgmt_subnet  = ["mgmt"]
 mgmt_cidr    = ["192.168.0.0/24"]
 mgmt_sources = ["0.0.0.0/0"]
+mgmt_regional_subnets = {
+  mgmt-useast4 = {
+    cidr   = "192.168.10.0/24"
+    region = "us-east4"
+  }
+}
 
 untrust_vpc    = "untrust-vpc"
 untrust_subnet = ["untrust"]
 untrust_cidr   = ["192.168.1.0/24"]
+untrust_regional_subnets = {
+  untrust-useast4 = {
+    cidr   = "192.168.11.0/24"
+    region = "us-east4"
+  }
+}
 
 trust_vpc    = "trust-vpc"
 trust_subnet = ["trust"]
 trust_cidr   = ["192.168.2.0/24"]
+trust_regional_subnets = {
+  trust-useast4 = {
+    cidr   = "192.168.12.0/24"
+    region = "us-east4"
+  }
+}
 
 spoke1_vpc     = "spoke1-vpc"
 spoke1_subnets = ["spoke1-subnet1"]

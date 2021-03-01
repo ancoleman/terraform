@@ -26,6 +26,21 @@ module "vm_spoke1" {
   startup_script        = file("${path.module}/scripts/webserver-startup.sh")
 }
 
+module "vm_spoke1-useast4" {
+  source = "./modules/vm/"
+  names  = ["spoke1-vm1-useast4", "spoke1-vm2-useast4"]
+  zones = [
+    data.google_compute_zones.useast4.names[0],
+    data.google_compute_zones.useast4.names[1]
+  ]
+  subnetworks           = [module.vpc_spoke1.vpc_regional_subnetworks_self_link_map["spk1-subnet-useast4-1"].self_link]
+  machine_type          = "f1-micro"
+  image                 = "ubuntu-os-cloud/ubuntu-1604-lts"
+  create_instance_group = true
+  ssh_key               = fileexists(var.public_key_path) ? "${var.spoke_user}:${file(var.public_key_path)}" : ""
+  startup_script        = file("${path.module}/scripts/webserver-startup.sh")
+}
+
 module "ilb_web" {
   source            = "./modules/lb_tcp_internal/"
   name              = var.spoke1_ilb

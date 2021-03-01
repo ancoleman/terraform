@@ -119,3 +119,15 @@ variable "spoke1_regional_subnets" {
 variable "spoke2_regional_subnets" {
   default = {}
 }
+
+variable "mgmt_regional_subnets" {
+  default = {}
+}
+
+variable "untrust_regional_subnets" {
+  default = {}
+}
+
+variable "trust_regional_subnets" {
+  default = {}
+}
