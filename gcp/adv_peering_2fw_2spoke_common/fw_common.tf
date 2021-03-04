@@ -89,7 +89,7 @@ module "lb_outbound" {
 
 module "fw_common_east4" {
   source = "./modules/vmseries/"
-  names  = var.fw_names_common
+  names  = ["vmseries01-useast4"]
   zones = [
     data.google_compute_zones.useast4.names[0],
     data.google_compute_zones.useast4.names[1]
@@ -97,7 +97,7 @@ module "fw_common_east4" {
   subnetworks = [
     module.vpc_mgmt.vpc_regional_subnetworks_self_link_map["mgmt-useast4"].self_link,
     module.vpc_untrust.vpc_regional_subnetworks_self_link_map["untrust-useast4"].self_link,
-    module.vpc_trust.vpc_regional_subnetworks_self_link_map["trust-useast4"].self_link
+    module.vpc_spoke1.vpc_regional_subnetworks_self_link_map["spk1-subnet-useast4-1"].self_link
   ]
   machine_type          = var.fw_machine_type
   bootstrap_bucket      = module.bootstrap_common.bucket_name
