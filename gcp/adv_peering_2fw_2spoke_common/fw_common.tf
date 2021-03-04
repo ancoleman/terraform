@@ -154,10 +154,6 @@ output "MGMT-FW1-USEAST4" {
   value = "https://${module.fw_common_east4.nic1_public_ip[0]}"
 }
 
-output "MGMT-FW2-USEAST4" {
-  value = "https://${module.fw_common_east4.nic1_public_ip[1]}"
-}
-
 output "SSH-TO-SPOKE1" {
   value = "ssh ${var.spoke_user}@${module.fw_common.nic0_public_ip[0]} -p 221 -i ${replace(var.public_key_path, ".pub", "")}"
 }
